@@ -171,5 +171,4 @@ In investigating potential people counter models, I tried each of the following 
       ```
       python mo_tf.py --input_model frozen_inference_graph.pb --tensorflow_object_detection_api_pipeline_config pipeline.config --reverse_input_channels --tensorflow_use_custom_operations_config extensions/front/tf/ssd_v2_support.json
       ```
-      
-  - The model was insufficient for the app because It also has issues like first model where it failed to detect person in specific time period. It was sticking at some places where a person may leave the screen but still counted as 1 person on screen. Tried it with other video but same results. Count was not proper and also time duration which would affect the average duration with no accurate measurements exactly so I couldn't use this model too.
+ The model was not enough to implement because it also contained problems like the first model where it failed to detect the person in a specific time period. It was hanging in some places where a person might leave the screen but still counted as one person on the screen. I tried it with another video but had the same results. The count was not appropriate as well as the length of time that would affect the average duration without completely accurate measurements, so I was unable to use this form either.
