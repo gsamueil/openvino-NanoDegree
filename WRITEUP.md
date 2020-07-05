@@ -1,40 +1,22 @@
 # Project Write-Up
 
-The model I have used in my project is 'person-detection-retail-0013'.
-This model was taken from website: https://docs.openvinotoolkit.org/2019_R3/_models_intel_index.html
 
-The model suitable for my device was: https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_detection_retail_0013_description_person_detection_retail_0013.html
-
-I have used the following commands to download the model:
-- `cd /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader`
-- `ls`
-- `sudo ./downloader.py --name person-detection-retail-0013 --precisions FP16 -o /home/workspace`
-
-***This helped me to get `.xml` and `.bin` files required for the project and converting it into Inference model***
-
-Then, I used the following command to run main.py:
-
-```
-python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m person-detection-retail-0013.xml -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.6 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
-```
 
 ## Explaining Custom Layers
 
 The process behind converting custom layers involves depends on frameowrks we use either it is tensorflow,caffee or kaldi. We can find it here:
 https://docs.openvinotoolkit.org/2019_R3/_docs_MO_DG_prepare_model_customize_model_optimizer_Customize_Model_Optimizer.html
 
-The example model is fed to the Model Optimizer that loads the model with the special parser, built on top of caffe.proto file. In case of failure, Model Optimizer asks you to prepare the parser that can read the model.
-Model Optimizer extracts the attributes of all layers. In particular, it goes through the list of layers and attempts to find the appropriate extractor. In order of priority, Model Optimizer checks if the layer is registered as:
+The example template is provided with a form optimizer that loads the form using the special parser, built on top of the caffe.proto file. In case of failure, the Form Optimizer prompts you to set up a parser who can read the form.
+The Model Optimizer extracts attributes for all layers. In particular, it goes through the list of layers and tries to find the appropriate extractor. In order of priority, the Model Optimizer checks if the layer is registered as:
 
   - CustomLayersMapping.xml
   - Model Optimizer extension
   - Standard Model Optimizer layer
 
 Custom layers are important to use because:
-  - If your layer output shape depends on dynamic parameters, input data or previous layers parameters, calculation of output shape of the layer via model used can be incorrect. In this case, you need to patch it on your own.
-  - If the calculation of output shape of the layer fails inside the framework, Model Optimizer is unable to produce any correct Intermediate Representation and you also need to investigate the issue in the implementation of layers and patch it.
-  - You are not able to produce Intermediate Representation on any machine that does not have model installed. If you want to use Model Optimizer on multiple machines, your topology contains Custom Layers and you use CustomLayersMapping.xml to fallback on it, you need to configure on each new machine.
-
+  - If your layer output shape depends on dynamic parameters, input data or previous layers parameters, calculation of output shape of the layer via model used can be incorrect. In this case, you need to patch it .
+  
 Some of the potential reasons for handling custom layers is to optimize our pre-trained models and convert them to a intermediate representation(IR) without a lot of loss of accuracy and shrink and speed up the Performance so that desired output is resulted.
 
 You have two options for TensorFlow* models with custom layers as I have tried 3 models below:
@@ -44,7 +26,7 @@ You have two options for TensorFlow* models with custom layers as I have tried 3
 
 There are majorly two custom layer extensions required-
 - Custom Layer Extractor
-  Responsible for identifying the custom layer operation and extracting the parameters for each instance of the custom layer. The layer parameters are stored per instance and used by the layer operation before finally appearing in the output IR. Typically the input layer parameters are unchanged, which is the case covered by this tutorial.
+ Responsible for defining the custom layer process and extracting parameters for each instance of the custom layer. Layer parameters are stored for each instance and used by the layer process before they finally appear in the resulting IR. The input layer parameters usually don't change, which is the case covered by this tutorial.
 
 - Custom Layer Operation
   Responsible for specifying the attributes that are supported by the custom layer and computing the output shape for each instance of the custom layer from its parameters. The `--mo-op` command-line argument shown in the examples below generates a custom layer operation for the Model Optimizer.
@@ -91,10 +73,6 @@ Some of the potential use cases of the people counter app are
 - It helps to improve in-store operations.
 
 - Every business with a physical space should count customer traffic to see the bigger picture of what is going on in their business.
-
-- Each of these use cases would be useful because every business whether you are a shopping center, retail chain, museum, library, sporting venue, bank, restaurant or other.People Counting data will help you make well-informed decisions about your business.
-
-- It can help to optimize sales and conversions.
 
 Each of these use cases would be useful because it helps to optimise our work and makes it easier to detect whatever we require.
 
