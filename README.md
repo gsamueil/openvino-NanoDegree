@@ -17,7 +17,15 @@ The counter will use the Inference Engine included in the Intel® Distribution o
 You will choose a model to use and convert it with the Model Optimizer.
 
 ![architectural diagram](./images/arch_diagram.png)
-
+main.py required
+------------------
+Connect to the MQTT server
+Handle the input stream
+Use your work from inference.py to perform inference
+Extract the model output, and draw any necessary information on the frame (bounding boxes, semantic masks, etc.)
+Perform analysis on the output to determine the number of people in frame, time spent in frame, and the total number of people counted
+Send statistics to the MQTT server
+Send processed frame to FFmpeg
 ## Requirements
 
 ### Hardware
